@@ -53,7 +53,7 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding}" Margin="3, 0" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding}" Margin="1, 0" VerticalAlignment="Center" />
                             <iconPacks:PackIconUnicons Kind="Eye" Width="24" Height="24" />
                         </StackPanel>
                     </DataTemplate>

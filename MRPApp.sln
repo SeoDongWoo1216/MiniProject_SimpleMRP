@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MRPApp", "MRPApp\MRPApp.csproj", "{9FD07080-99C1-446D-8095-E53E4BEC2202}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceSubApp", "DeviceSubApp\DeviceSubApp.csproj", "{F30E6A10-34F8-457B-AF5E-FD3D4183553C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9FD07080-99C1-446D-8095-E53E4BEC2202}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FD07080-99C1-446D-8095-E53E4BEC2202}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FD07080-99C1-446D-8095-E53E4BEC2202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F30E6A10-34F8-457B-AF5E-FD3D4183553C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30E6A10-34F8-457B-AF5E-FD3D4183553C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F30E6A10-34F8-457B-AF5E-FD3D4183553C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F30E6A10-34F8-457B-AF5E-FD3D4183553C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
