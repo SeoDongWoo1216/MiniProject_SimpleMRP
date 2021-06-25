@@ -10,15 +10,20 @@ namespace MRPApp.Logic
 {
     public class DataAccess
     {
-        // 세팅 테이블에서 데이터 가져오기
+
+        ////////////////////////////////// 설정(Setting) DB //////////////////////////////////////////////////
+
+
+        
         public static List<Settings> GetSettings()
         {
-            List<Model.Settings> settings;
+            // 세팅 테이블에서 데이터 가져오기
+            List<Model.Settings> list;
 
             using (var ctx = new MRPEntities())
-                settings = ctx.Settings.ToList();  // 세팅즈에있는 DB 데이터를 가져와서 리스트로 만들겠다. (SELECT)
+                list = ctx.Settings.ToList();  // Settings에있는 DB 데이터를 가져와서 list에 넣어줌.  (SELECT)
 
-            return settings;  // DB데이터가 담긴 리스트(settings)를 반환
+            return list;  // DB데이터가 담긴 list를 반환
         }
 
         internal static int Setsettings(Settings item)  // object -> int로 바꿔줬음
@@ -37,6 +42,31 @@ namespace MRPApp.Logic
                 var obj = ctx.Settings.Find(item.BasicCode);  // 삭제할 데이터를 검색해서 그 검색된 데이터를 삭제함
                 ctx.Settings.Remove(obj);     // obj를 Delete = Remove (데이터 삭제)
                 return ctx.SaveChanges();
+            }
+        }
+
+
+
+
+
+        ////////////////////////////////// 공정계획(Schedules) DB //////////////////////////////////////////////////
+
+        internal static List<Schedules> GetSchedules()
+        {
+            List<Model.Schedules> list;
+
+            using (var ctx = new MRPEntities())
+                list = ctx.Schedules.ToList();  // Schdules에있는 DB 데이터를 가져와서 list에 넣어줌. (SELECT)
+
+            return list;  // DB데이터가 담긴 list를 반환
+        }
+
+        internal static int SetSchedules(Schedules item)
+        {
+            using (var ctx = new MRPEntities())
+            {
+                ctx.Schedules.AddOrUpdate(item);  // Insert or Update = AddOrUpdate 임. (데이터 삽입)
+                return ctx.SaveChanges();         // COMMIT
             }
         }
     }

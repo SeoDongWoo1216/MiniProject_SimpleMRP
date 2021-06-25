@@ -34,7 +34,7 @@
                     Grid.Column="0" 
                     Content="공정계획" FontSize="16" 
                     Foreground="White" Background="DodgerBlue"
-                    Margin="5, 10">
+                    Margin="5, 10" Click="BtnSchedule_Click">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

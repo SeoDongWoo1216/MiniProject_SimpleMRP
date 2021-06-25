@@ -5,13 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7d49ad1e192d46f980175a5f0e2061ba" Name="Diagram1" ZoomLevel="96">
-        <EntityTypeShape EntityType="MRPModel.Process" Width="1.5" PointX="10.25" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MRPModel.Schedules" Width="1.5" PointX="8.25" PointY="6.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MRPModel.Settings" Width="1.5" PointX="5.75" PointY="4.25" IsExpanded="true" />
-        <AssociationConnector Association="MRPModel.FK_Process_Schedules" ManuallyRouted="false" />
-        <AssociationConnector Association="MRPModel.FK_Process_Settings" ManuallyRouted="false" />
-        <AssociationConnector Association="MRPModel.FK_Schedules_Settings" ManuallyRouted="false" />
-        <AssociationConnector Association="MRPModel.FK_Schedules_Settings1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MRPModel.Process" Width="1.5" PointX="5.25" PointY="6.125" />
+        <EntityTypeShape EntityType="MRPModel.Schedules" Width="1.5" PointX="3" PointY="8.25" />
+        <EntityTypeShape EntityType="MRPModel.Settings" Width="1.5" PointX="0.75" PointY="4" />
+        <AssociationConnector Association="MRPModel.FK_Process_Schedules" />
+        <AssociationConnector Association="MRPModel.FK_Process_Settings" />
+        <AssociationConnector Association="MRPModel.FK_Schedules_Settings" />
+        <AssociationConnector Association="MRPModel.FK_Schedules_Settings1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

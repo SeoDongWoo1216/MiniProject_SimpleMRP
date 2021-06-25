@@ -18,6 +18,7 @@ using MRPApp.View;
 using MRPApp.View.Account;
 using MRPApp.View.Store;
 using MRPApp.View.Setting;
+using MRPApp.View.Schedule;
 
 namespace MRPApp
 {
@@ -88,8 +89,10 @@ namespace MRPApp
             }
         }
 
+        
         private void BtnSetting_click(object sender, RoutedEventArgs e)
         {
+            // 세팅 버튼 클릭했을때 세팅 화면 띄우기
             try
             {
                 ActiveControl.Content = new SettingList();
@@ -104,6 +107,21 @@ namespace MRPApp
         private void MetroWindow_ContentRendered(object sender, EventArgs e)
         {
 
+        }
+
+        private void BtnSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            // 공정계획 버튼 클릭했을때 세팅 화면 띄우기
+
+            try
+            {
+                ActiveControl.Content = new ScheduleList();
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 BtnSchedule_click : {ex}");
+                this.ShowMessageAsync("예외", $"예외발생 : {ex}");
+            }
         }
     }
 }
