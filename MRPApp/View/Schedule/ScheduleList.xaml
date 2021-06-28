@@ -193,16 +193,22 @@
 
             <DataGrid x:Name="GrdData" Grid.Row="1"
                       AutoGenerateColumns="False" SelectionUnit="FullRow"
-                      GridLinesVisibility="Vertical" IsReadOnly="True"
+                      GridLinesVisibility="Vertical"  IsReadOnly="True"
                       Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
                       ItemsSource="{Binding}" SelectedCellsChanged="GrdData_SelectedCellsChanged">
                 <DataGrid.Columns>
                     <!--그리드 컬럼명 초기화-->
-                    <DataGridTextColumn Binding="{Binding SchIdx}" Header="순번" Width="100" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding PlantCode}" Header="공장" Width="1*" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding SchIdx}" Header="순번" Width="100"  />
+                    <!--<DataGridTextColumn Binding="{Binding PlantCode}" Header="공장" Width="1*" IsReadOnly="True" />-->
+                    <DataGridComboBoxColumn x:Name="CboGridPlantCode"
+                                            Header="공장" Width="1*" 
+                                            DisplayMemberPath="CodeName" 
+                                            SelectedValuePath="BasicCode" 
+                                            SelectedValueBinding="{Binding PlantCode}" 
+                                            />
                     <DataGridTextColumn Binding="{Binding SchDate, StringFormat='yyyy-MM-dd'}" Header="공정일" Width="1*" IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding SchAmount}" Header="계획수량" Width="1*" IsReadOnly="True" />
-                    <DataGridTextColumn Width="10" IsReadOnly="True" /> <!-- 맨마지막은 더미컬럼 생성(시각적으로 답답해보이는 느낌을 해소해줌) -->
+                    <DataGridTextColumn Binding="{Binding SchAmount}" Header="계획수량" Width="1*"  />
+                    <DataGridTextColumn Width="10" /> <!-- 맨마지막은 더미컬럼 생성(시각적으로 답답해보이는 느낌을 해소해줌) -->
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

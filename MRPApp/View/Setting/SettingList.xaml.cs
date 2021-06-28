@@ -153,8 +153,6 @@ namespace MRPApp.View.Setting
         {
             var setting = GrdData.SelectedItem as Model.Settings;
 
-            if (ValidInput() != true) return;
-
             // 텍스트 박스의 값을 DB(setting)에 넣어줌
 
             setting.CodeName = TxtCodeName.Text;

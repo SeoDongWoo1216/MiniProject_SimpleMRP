@@ -19,6 +19,8 @@ using MRPApp.View.Account;
 using MRPApp.View.Store;
 using MRPApp.View.Setting;
 using MRPApp.View.Schedule;
+using System.Configuration;
+using MRPApp.View.Process;
 
 namespace MRPApp
 {
@@ -30,13 +32,36 @@ namespace MRPApp
         public MainWindow()
         {
             InitializeComponent();
-        }       
+        }
 
+        private void MetroWindow_ContentRendered(object sender, EventArgs e)
+        {
 
+        }
+
+        // 메인 윈도우가 실행될때 발생하는 이벤트
         private void MetroWindow_Activated(object sender, EventArgs e)
         {
             //if (Commons.LOGINED_USER != null)
             //    BtnLoginedId.Content = $"{Commons.LOGINED_USER.UserEmail} ({Commons.LOGINED_USER.UserName})";
+
+            // App.config에 추가한 key값을 컨트롤 박스 옆에 출력
+            //var temp = ConfigurationManager.AppSettings["Test"];    // AppSettings[]에는 key값을 넣어줌
+            //var temp = ConfigurationManager.AppSettings.Get("PlantCode"); 
+            //BtnPlantName.Content = temp;
+
+
+            // PlantCode에 해당되는 공장이름을 컨트롤 박스 옆에 출력해줌(DB의 데이터를 조회해서 동적으로 추가됨)
+            Commons.PLANTCODE = ConfigurationManager.AppSettings.Get("PlantCode");
+            try
+            {
+                var plantName = Logic.DataAccess.GetSettings().Where(c => c.BasicCode.Equals(Commons.PLANTCODE)).FirstOrDefault().CodeName;
+                BtnPlantName.Content = plantName;
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외 발생 : {ex}");
+            }
         }
 
 
@@ -103,11 +128,7 @@ namespace MRPApp
                 this.ShowMessageAsync("예외", $"예외발생 : {ex}");
             }
         }
-
-        private void MetroWindow_ContentRendered(object sender, EventArgs e)
-        {
-
-        }
+       
 
         private void BtnSchedule_Click(object sender, RoutedEventArgs e)
         {
@@ -120,6 +141,20 @@ namespace MRPApp
             catch (Exception ex)
             {
                 Commons.LOGGER.Error($"예외발생 BtnSchedule_click : {ex}");
+                this.ShowMessageAsync("예외", $"예외발생 : {ex}");
+            }
+        }
+
+        private void BtnMonitoring_Click(object sender, RoutedEventArgs e)
+        {
+            // 모니터링 버튼 클릭했을때 ProcessView 화면 띄우기
+            try
+            {
+                ActiveControl.Content = new ProcessView();
+            }
+            catch (Exception ex)
+            {
+                Commons.LOGGER.Error($"예외발생 BtnMonitoring_Click : {ex}");
                 this.ShowMessageAsync("예외", $"예외발생 : {ex}");
             }
         }
