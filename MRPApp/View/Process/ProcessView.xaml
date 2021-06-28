@@ -1,0 +1,118 @@
+﻿<Page 
+    x:Class="MRPApp.View.Process.ProcessView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:MRPApp.View.Process"
+    mc:Ignorable="d" 
+    d:DesignHeight="630" d:DesignWidth="1200"
+    Title="ProcessView" Loaded="Page_Loaded">
+    <Page.Resources>
+        <Style TargetType="Label">
+            <!-- {x:Type Label} -->
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="10, 0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="380" />
+        </Grid.ColumnDefinitions>
+
+        <!-- 제목입력 시작 -->
+        <Label Grid.Row="0" Grid.Column="1" Content="공정모니터링" FontSize="26" FontWeight="ExtraBold"
+               VerticalContentAlignment="Bottom" HorizontalContentAlignment="Left" />
+        <!-- 제목입력 끝 -->
+
+        <!-- 버튼영역 시작 -->
+
+        <!-- 버튼영역 끝 -->
+
+        <!-- 컨텐츠영역 시작 -->
+        <Grid Grid.Row="1" Grid.Column="1" Margin="3,6,7,4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="BtnStartProcess"
+                    FontSize="12" 
+                    Background="DarkSlateBlue"
+                    Foreground="White"
+                    Width="90"
+                    HorizontalAlignment="left"
+                    Content="시작" 
+                    Click="BtnStartProcess_Click"></Button>
+
+            <!-- 임의의 HMI를 만듬(애니메이션 만들어보기) -->
+            <Canvas Grid.Row="1" >
+                <Image Width="626" Height="268" 
+                       Source="D:\GitRepository\MiniProject_SimpleMRP\MRPApp\Resources\belt.png" Canvas.Left="72" Canvas.Top="174"
+                       />
+                <Image x:Name="Gear1" HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Height="100" Width="100"
+                       Source= "D:\GitRepository\MiniProject_SimpleMRP\MRPApp\Resources\gear.png" Canvas.Left="82" Canvas.Top="258"
+                       />
+
+                <Image x:Name="Gear2" HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Height="100" Width="100"
+                       Source= "/MRPApp;component/Resources/gear.png" Canvas.Left="587" Canvas.Top="258"
+                       />
+
+                <Image x:Name="Sensor"
+                       Width="100" Height="100" 
+                       Source="D:\GitRepository\MiniProject_SimpleMRP\MRPApp\Resources\sensor.png" Canvas.Left="494" Canvas.Top="68"
+                       />
+                <Rectangle 
+                    x:Name="Product" Height="50" Width="50" Canvas.Left="148" Canvas.Top="199"
+                    Stroke="Black" Fill="Gray"       
+                           />
+            </Canvas>
+
+        </Grid>
+        <!-- 컨텐츠영역 끝 -->
+
+        <!-- 모니터링 영역-->
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="공정일" FontSize="20" FontFamily="나눔고딕"/>
+            <Label x:Name="LblProcessDate" Grid.Row="0" Grid.Column="1" Content="2021-06-27" FontSize="20" FontFamily="나눔고딕" />
+
+            <Label Grid.Row="1" Grid.Column="0" Content="공정로드타임" FontSize="20" FontFamily="나눔고딕"/>
+            <Label x:Name="LblSchLoadTime" Grid.Row="1" Grid.Column="1" Content="90 초" FontSize="20" FontFamily="나눔고딕" />
+
+            <Label Grid.Row="2" Grid.Column="0" Content="계획수량" FontSize="20" FontFamily="나눔고딕"/>
+            <Label x:Name="LblSchAmount" Grid.Row="2" Grid.Column="1" Content="100개" FontSize="20" FontFamily="나눔고딕" />
+        </Grid>
+    </Grid>
+</Page>
