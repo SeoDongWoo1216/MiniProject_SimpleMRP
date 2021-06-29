@@ -15,7 +15,10 @@ namespace MRPApp
         public static readonly Logger LOGGER = LogManager.GetCurrentClassLogger();
 
         // 현재 애플리케이션 공장코드
-        public static string PLANTCODE = string.Empty;  //
+        public static string PLANTCODE = string.Empty;
+
+        // 현재 설비 아이디
+        public static string FACILITYID = string.Empty;
         
 
         /// <summary>
