@@ -53,6 +53,7 @@ namespace MRPApp
 
             // PlantCode에 해당되는 공장이름을 컨트롤 박스 옆에 출력해줌(DB의 데이터를 조회해서 동적으로 추가됨)
             Commons.PLANTCODE = ConfigurationManager.AppSettings.Get("PlantCode");
+            Commons.FACILITYID = ConfigurationManager.AppSettings.Get("FacilityID");
             try
             {
                 var plantName = Logic.DataAccess.GetSettings().Where(c => c.BasicCode.Equals(Commons.PLANTCODE)).FirstOrDefault().CodeName;

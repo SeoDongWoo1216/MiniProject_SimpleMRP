@@ -13,7 +13,6 @@ namespace MRPApp.Logic
 
         ////////////////////////////////// 설정(Setting) DB //////////////////////////////////////////////////
 
-
         
         public static List<Settings> GetSettings()
         {
@@ -47,9 +46,8 @@ namespace MRPApp.Logic
 
 
 
-
-
         ////////////////////////////////// 공정계획(Schedules) DB //////////////////////////////////////////////////
+
 
         internal static List<Schedules> GetSchedules()
         {
@@ -68,6 +66,31 @@ namespace MRPApp.Logic
                 ctx.Schedules.AddOrUpdate(item);  // Insert or Update = AddOrUpdate 임. (데이터 삽입)
                 return ctx.SaveChanges();         // COMMIT
             }
+        }
+
+
+        //////////////////////////////////  프로세스(Process) DB  /////////////////////////////////
+
+
+        internal static List<Process> GetProcesses()
+        {
+            List<Model.Process> list;
+
+            using(var ctx = new MRPEntities())
+            {
+                list = ctx.Process.ToList(); // SELECT
+            }
+            return list;
+        }
+
+        internal static int SetProcesses(Process item)
+        {
+            using (var ctx = new MRPEntities())
+            {
+                ctx.Process.AddOrUpdate(item);  // INSERT | UPDATE
+                return ctx.SaveChanges();    // COMMIT
+            }
+
         }
     }
 }

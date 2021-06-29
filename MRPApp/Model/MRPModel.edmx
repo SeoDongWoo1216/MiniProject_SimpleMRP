@@ -27,7 +27,7 @@
           <Key>
             <PropertyRef Name="SchIdx" />
           </Key>
-          <Property Name="SchIdx" Type="int" Nullable="false" />
+          <Property Name="SchIdx" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PlantCode" Type="char" MaxLength="8" />
           <Property Name="SchDate" Type="date" Nullable="false" />
           <Property Name="LoadTime" Type="int" Nullable="false" />
