@@ -1,15 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;  // Sql서버를 쓰기위한 커넥션 라이브러리
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Net;  // TCP/IP 라이브러리
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using uPLibrary.Networking.M2Mqtt;  // Mqtt 라이브러리
 using uPLibrary.Networking.M2Mqtt.Messages;
@@ -62,7 +58,7 @@ namespace DeviceSubApp
         private void Timer_Tick(object sender, EventArgs e)
         {
             LblResult.Text = sw.Elapsed.Seconds.ToString();
-            if(sw.Elapsed.Seconds >= 3)
+            if(sw.Elapsed.Seconds >= 2)  // 2초 대기 후 일처리
             {
                 sw.Stop();
                 sw.Reset();
@@ -85,13 +81,12 @@ namespace DeviceSubApp
                 {
                     var prcResult = correctData["PRC_MSG"] == "OK" ? 1 : 0;   // 1이면 초록색(OK), 0이면 빨간색(FAIL)
 
-                    string strUpQry = $"UPDATE Process_DEV  " +
-                                      $"   SET PrcEndTime = '{DateTime.Now.ToString("HH:mm:ss")}'" +
-                                      $"     , PrcResult = '{prcResult}'" +
-                                      $"     , ModDate = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}'" +
-                                      $"     , ModID = '{"SYS"}'" +
+                    string strUpQry = $"UPDATE Process " +
+                                      $"   SET PrcResult = '{prcResult}'  " +
+                                      $"     , ModDate = '{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}'  " +
+                                      $"     , ModID = '{"SYS"}'  " +
                                       $" WHERE PrcIdx =  " +
-                                      $" (SELECT TOP 1 PrcIdx FROM Process_DEV ORDER BY PrcIdx DESC)";
+                                      $" (SELECT TOP 1 PrcIdx FROM Process ORDER BY PrcIdx DESC)";
 
                     try
                     {
@@ -112,7 +107,6 @@ namespace DeviceSubApp
                     }
                 }
             }
-
             iotData.Clear();  // 데이터 모두 삭제
         }
 
