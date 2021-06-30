@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
@@ -68,6 +69,7 @@ namespace MRPApp.View.Process
                     LblSchAmount.Content = $"{currSchedule.SchAmount} 개";
                     BtnStartProcess.IsEnabled = true;
 
+                    UpdateData();
                     InitConnectMqttBroker();   // 공정시작시 MQTT 브로커에 연결
                 }
             }
@@ -89,9 +91,8 @@ namespace MRPApp.View.Process
             client = new MqttClient(brokerAddress);
             client.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
             client.Connect("Monitor");
-            client.Subscribe(new string[] { "factory1/machine1/data" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE });
+            client.Subscribe(new string[] { "factory1/machine1/data/" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE });
 
-            timer = new Timer();
             timer.Enabled = true;
             timer.Interval = 1000;  // 1000ms -> 1sec
             timer.Elapsed += Timer_Elapsed;
@@ -104,8 +105,50 @@ namespace MRPApp.View.Process
             {
                 sw.Stop();
                 sw.Reset();
-                MessageBox.Show(currentData["PRC_MSG"]);
+                //MessageBox.Show(currentData["PRC_MSG"]);
+                if(currentData["PRC_MSG"] == "OK")
+                {
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                    {
+                        Product.Fill = new SolidColorBrush(Colors.Green);
+                    }));
+                }
+                else if(currentData["PRC_MSG"] == "FAIL")
+                {
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                    {
+                        Product.Fill = new SolidColorBrush(Colors.Red);
+                    }));
+                }
+
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+                {
+                    UpdateData();
+                }));
             }
+        }
+
+        private void UpdateData()
+        {
+            // 성공수량
+            var prcOkAmount = Logic.DataAccess.GetProcesses().Where(p => p.SchIdx.Equals(currSchedule.SchIdx))
+                                  .Where(p => p.PrcResult.Equals(true)).Count();
+
+            // 실패수량
+            var prcFailAmount = Logic.DataAccess.GetProcesses().Where(p => p.SchIdx.Equals(currSchedule.SchIdx))
+                                  .Where(p => p.PrcResult.Equals(false)).Count();
+
+
+            // 공정 성공률
+            var prcOkRate = (double)prcOkAmount / (double)currSchedule.SchAmount * 100;
+
+            // 공정 실패율
+            var prcFailRate = (double)prcFailAmount / (double)currSchedule.SchAmount * 100;
+
+            LblPrcOkAmount.Content = $"{prcOkAmount} 개";
+            LblPrcFailAmount.Content = $"{prcFailAmount} 개";
+            LblPrcOkRate.Content = $"{prcOkRate} %";
+            LblPrcFailRate.Content = $"{prcFailRate} %";
         }
 
         Dictionary<string, string> currentData = new Dictionary<string, string>();
@@ -113,25 +156,34 @@ namespace MRPApp.View.Process
         private void Client_MqttMsgPublishReceived(object sender, uPLibrary.Networking.M2Mqtt.Messages.MqttMsgPublishEventArgs e)
         {
             var message = Encoding.UTF8.GetString(e.Message);
-            var currentData = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
+            currentData = JsonConvert.DeserializeObject<Dictionary<string, string>>(message);
 
-            sw.Stop();
-            sw.Reset();
-            sw.Start();
+            if (currentData["PRC_MSG"] == "OK" || currentData["PRC_MSG"] == "FAIL")
+            {
+                sw.Stop();
+                sw.Reset();
+                sw.Start();
+
+                StartSensorAnimation();
+            }
+
 
             StartSensorAnimation();
         }
 
         private void StartSensorAnimation()
         {
-            DoubleAnimation ba = new DoubleAnimation();
-            ba.From = 1;  // 최초 켜짐(이미지 보임)
-            ba.To = 0;    // 이미지 보이지 않음
-            ba.Duration = TimeSpan.FromSeconds(2);
-            ba.AutoReverse = true;
-            //ba.RepeatBehavior = RepeatBehavior.Forever;  // 계속 도는거
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
+            {
+                DoubleAnimation ba = new DoubleAnimation();
+                ba.From = 1;  // 최초 켜짐(이미지 보임)
+                ba.To = 0;    // 이미지 보이지 않음
+                ba.Duration = TimeSpan.FromSeconds(2);
+                ba.AutoReverse = true;
+                //ba.RepeatBehavior = RepeatBehavior.Forever;  // 계속 도는거
 
-            Sensor.BeginAnimation(Canvas.OpacityProperty, ba);
+                Sensor.BeginAnimation(Canvas.OpacityProperty, ba);
+            }));
         }
 
         private void BtnStartProcess_Click(object sender, RoutedEventArgs e)
@@ -167,7 +219,6 @@ namespace MRPApp.View.Process
                 {
                     Commons.LOGGER.Info("공정데이터 입력!");
                     return true;
-
                 }
             }
             catch (Exception ex)
@@ -206,6 +257,8 @@ namespace MRPApp.View.Process
 
         private void StartAnimation()
         {
+            Product.Fill = new SolidColorBrush(Colors.Gray);
+
             // 기어 애니메이션 속성(기어 돌리기)
             DoubleAnimation da = new DoubleAnimation();
             da.From = 0;
@@ -230,6 +283,13 @@ namespace MRPApp.View.Process
             //ma.AutoReverse = false;
 
             Product.BeginAnimation(Canvas.LeftProperty, ma);
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            // 자원해제
+            if (client.IsConnected) client.Disconnect();
+            timer.Dispose();
         }
     }
 }

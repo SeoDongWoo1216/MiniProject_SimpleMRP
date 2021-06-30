@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="PrcIdx" />
           </Key>
-          <Property Name="PrcIdx" Type="int" Nullable="false" />
+          <Property Name="PrcIdx" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SchIdx" Type="int" Nullable="false" />
           <Property Name="PrcCD" Type="char" MaxLength="14" Nullable="false" />
           <Property Name="PrcDate" Type="date" Nullable="false" />
@@ -150,7 +150,7 @@
           <Key>
             <PropertyRef Name="PrcIdx" />
           </Key>
-          <Property Name="PrcIdx" Type="Int32" Nullable="false" />
+          <Property Name="PrcIdx" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SchIdx" Type="Int32" Nullable="false" />
           <Property Name="PrcCD" Type="String" Nullable="false" MaxLength="14" FixedLength="true" Unicode="false" />
           <Property Name="PrcDate" Type="DateTime" Nullable="false" Precision="0" />
@@ -170,7 +170,7 @@
           <Key>
             <PropertyRef Name="SchIdx" />
           </Key>
-          <Property Name="SchIdx" Type="Int32" Nullable="false" />
+          <Property Name="SchIdx" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PlantCode" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
           <Property Name="SchDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="LoadTime" Type="Int32" Nullable="false" />
@@ -249,7 +249,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
