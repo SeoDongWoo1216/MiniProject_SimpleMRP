@@ -1,10 +1,12 @@
 ﻿SELECT * FROM Process
 SELECT * FROM Schedules
 
+
 -- 스케줄이 부모, 프로세스가 자식(SchIdx로 연결되어있음)
 SELECT s.* FROM Schedules AS s
 INNER JOIN Process AS p
 ON s.SchIdx = p.SchIdx
+
 
 -- 1. Prc Result에서 성공개수와 실패개수를 다른 (가상)컬럼으로 분리
 SELECT p.SchIdx, p.PrcDate, 
@@ -30,6 +32,7 @@ SELECT * FROM Schedules AS sch
 INNER JOIN Process AS prc
 ON sch.SchIdx = Prc.SchIdx
 
+
 -- 3.1 2번결과(가상테이블)과 Schedules 테이블을 조인해서 원하는 결과 도출
  SELECT sch.SchIdx, sch.PlantCode, sch.SchAmount, prc.PrcDate,
         prc.PrcOkAmount, prc.PrcFailAmount
@@ -43,8 +46,10 @@ INNER JOIN (
 						   CASE p.PrcResult WHEN 0 THEN 1 ELSE 0 END AS PrcFail   
 					  FROM Process AS p
 				   )  AS smr
-GROUP BY smr.SchIdx, smr.PrcDate
+            GROUP BY smr.SchIdx, smr.PrcDate
 ) AS prc
   ON sch.SchIdx = Prc.SchIdx
+WHERE sch.PlantCode = 'PC010002' 
+  AND prc.PrcDate BETWEEN '2021-06-29' AND '2021-07-01'
 
 
