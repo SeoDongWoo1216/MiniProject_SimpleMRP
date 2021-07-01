@@ -43,15 +43,6 @@ namespace MRPApp
         // 메인 윈도우가 실행될때 발생하는 이벤트
         private void MetroWindow_Activated(object sender, EventArgs e)
         {
-            //if (Commons.LOGINED_USER != null)
-            //    BtnLoginedId.Content = $"{Commons.LOGINED_USER.UserEmail} ({Commons.LOGINED_USER.UserName})";
-
-            // App.config에 추가한 key값을 컨트롤 박스 옆에 출력
-            //var temp = ConfigurationManager.AppSettings["Test"];    // AppSettings[]에는 key값을 넣어줌
-            //var temp = ConfigurationManager.AppSettings.Get("PlantCode"); 
-            //BtnPlantName.Content = temp;
-
-
             // PlantCode에 해당되는 공장이름을 컨트롤 박스 옆에 출력해줌(DB의 데이터를 조회해서 동적으로 추가됨)
             Commons.PLANTCODE = ConfigurationManager.AppSettings.Get("PlantCode");
             Commons.FACILITYID = ConfigurationManager.AppSettings.Get("FacilityID");
