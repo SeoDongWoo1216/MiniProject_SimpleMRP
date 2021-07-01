@@ -21,7 +21,7 @@ namespace MRPApp.View.Process
     /// 1. 공정계획에서 오늘의 생산 계획 일정을 불러오기
     /// 2. 공정이 없으면 에러표시, 시작 버튼을 클릭하지 못하게 만듬
     /// 3. 공정이 있으면 오늘의 날짜를 표시, 시작 버튼 활성화
-    /// 3-1 MQTT Subscription 연결. factory1/machine1/data 확인...
+    /// 3-1 MQTT Subscription 연결. factory1/machine1/data/ 확인...
     /// 4. 시작 버튼 클릭시 새 공정 생성, DB에 입력
     ///   공정코드 : PRC20210618001 (PRC + yyyy + MM + dd + NNN)
     /// 5. 시작 버튼을 클릭했을때 공정처리 애니메이션 시작
@@ -145,10 +145,12 @@ namespace MRPApp.View.Process
             // 공정 실패율
             var prcFailRate = (double)prcFailAmount / (double)currSchedule.SchAmount * 100;
 
+
+            // 성공, 실패 수량과 비율을 출력
             LblPrcOkAmount.Content = $"{prcOkAmount} 개";
             LblPrcFailAmount.Content = $"{prcFailAmount} 개";
-            LblPrcOkRate.Content = $"{prcOkRate} %";
-            LblPrcFailRate.Content = $"{prcFailRate} %";
+            LblPrcOkRate.Content = $"{prcOkRate.ToString("#.##")} %";  // 소수점 2자리까지 짜르기
+            LblPrcFailRate.Content = $"{prcFailRate.ToString("#.##")} %";
         }
 
         Dictionary<string, string> currentData = new Dictionary<string, string>();
@@ -288,8 +290,11 @@ namespace MRPApp.View.Process
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             // 자원해제
-            if (client.IsConnected) client.Disconnect();
-            timer.Dispose();
+            if (client != null) client.Disconnect();
+            if (timer != null)
+            {
+                timer.Dispose();
+            }
         }
     }
 }
