@@ -1,10 +1,31 @@
 # MiniProject_SimpleMRP
+- MES는 'Manufacturing Execution System'으로 오더 착수부터 제품 출하까지 전 생산활동을 관리하는 시스템으로 생산 현장에서 발생하는 데이터를 실시간으로 집계/분석/모니터링하는 시스템입니다.
+- 이 프로그램에서는 공정의 품질검사 부분을 집계/모니터링합니다.(칼라센서를 통하여 구현)
+- 품질검사는 칼라센서를통해 빨간색이면 불량(Fail), 초록색이면 정상으로 구분하여 구현하였습니다.
+- 본 프로젝트는 라즈베리파이를 이용하여 센서링한 값을 MQTT 통신을 이용해 WPF와 DB를 연동하는 IoT 프로젝트입니다.
+
+
 #### 준비물
 - 라즈베리파이4
 - 브레드보드
 - Color 센서
 - 스위치 2개
 - 점퍼 케이블 다수
+
+#### Tools
+- Visual Studio
+- SQL Server
+- MQTT Explorer
+- Visual Studio Code
+
+<br>
+
+### 프로세스 구성 
+<p align = "center" >
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/MRP%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%AA%A9%ED%91%9C01.png"  >
+</p>
+
+<br>
 
 ### TCS3200 컬러감지 센서 모듈 GY-31
 - 칼라 센서를 활용해서 총 10개의 제품이 라인을 지나가는데 색깔별로 값을 매김(예를들어 초록은 1, 빨강은 fail)
@@ -49,8 +70,153 @@
 9. S2을 Pi의GPIO23에 연결
 10. OUT을 Pi의 GPIO25에 연결
 
-### 목표 
+<br>
+
+### 칼라센서 실행 코드
+```python
+# machine01.py  소스코드
+## 라이브러리 추가
+import time
+import datetime as dt
+from typing import OrderedDict
+import RPi.GPIO as GPIO
+import paho.mqtt.client as mqtt
+import json
+
+s2 = 23 # Raspberry pi PIN 23
+s3 = 24 # Raspberry pi PIN 24
+out = 25 # Raspberry pi PIN 25
+NUM_CYCLES = 10
+
+dev_id = 'MACHINE01'
+broker_address = '210.119.12.87'       # 브로커 주소 : 본인 컴퓨터의 IP
+pub_topic = 'factory1/machine1/data/'  # 토픽
+
+def send_data(param, red, green, blue):  # 누를때마다 데이터를 넘겨줌
+    message = ''
+    if param == 'GREEN':  # 녹색이면 OK
+        message = 'OK'
+    elif param == 'RED':  # 빨강이면 FAIL
+        message = 'FAIL'
+    elif param == 'CONN':
+        message = 'CONNECTED'
+    else:
+        message = 'ERROR'
+
+    # 날짜를 저장하면서 strftime으로 우리가 원하는 날짜로 표현해줌(년, 월, 일, 시, 분, 초, ms)
+    currtime = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')  
+
+    #json data generate
+    raw_data = OrderedDict()
+    raw_data['DEV_ID'] = dev_id 
+    raw_data['PRC_TIME'] = currtime  # 시간에 지남에따라 데이터가 바뀜
+    raw_data['PRC_MSG'] = message    # 조건문에 의해 반복적으로 데이터 바뀜
+    raw_data['PARAM'] = param 
+    raw_data['RED'] = red 
+    raw_data['GREEN'] = green 
+    raw_data['BLUE'] = blue 
+
+    # publish 데이터 변환
+    pub_data = json.dumps(raw_data, ensure_ascii = False, indent = '\t')  # json으로 반환
+    print(pub_data)
+
+    # mqtt_publish
+    client2.publish(pub_topic, pub_data)  # 퍼블리쉬 함수에는 토픽을 보냄
+
+
+
+def read_value(a2, a3):  # 값 2개를 받아서 처리할 함수(Low, High 값을 받음)
+    GPIO.output(s2, a2)
+    GPIO.output(s3, a3)
+    # 센서 조정시간 설정
+
+    time.sleep(0.3)
+
+    start = time.time()  # 현재 시간
+    for impule_count in range(NUM_CYCLES):
+        GPIO.wait_for_edge(out, GPIO.FALLING)
+
+    end = (time.time() - start)
+    return NUM_CYCLES / end  # 색상결과 리턴
+
+
+## GPIO 설정
+def setup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(s2, GPIO.OUT)  # 신호를 보내주므로 out
+    GPIO.setup(s3, GPIO.OUT)
+    GPIO.setup(out, GPIO.IN, pull_up_down = GPIO.PUD_UP)  # 센서결과 받기
+    
+## 반복하면서 일처리
+def loop():  
+    result = ''
+
+    while True:
+        red = read_value(GPIO.LOW, GPIO.LOW) # s2 LOW, s3 LOW
+        time.sleep(0.1)  # 0.1초 딜레이
+        green = read_value(GPIO.HIGH, GPIO.HIGH) # s2 HIHG, s3 HIHG
+        time.sleep(0.1)
+        blue = read_value(GPIO.LOW, GPIO.HIGH)
+        
+        print('red = {0}, green = {1}, blue = {2}'.format(red, green, blue))
+        if(red < 50): continue  # 센서가 빨간색을 잘 못알아먹어서 코드로 오류 제어
+        #if(red > 2000 or green > 2000 or  blue > 2000): continue
+
+        if (red > green) and (red > blue):
+            result = 'RED'
+            send_data(result, red, green, blue)
+        elif(green > red) and (green > blue):
+            result = 'GREEN'
+            send_data(result, red, green, blue)
+        else:
+            result = 'ERROR'
+
+        
+        time.sleep(1)
+
+# MQTT 초기화
+client2 = mqtt.Client(dev_id)   # 그냥 client는 import를 추가하는 등의 얽혀있는게 많아서 client2로 선언
+client2.connect(broker_address) # 브로커가 서버를 접속할 수 있게 해줌
+print('MQTT Client connected')  # 접속이 잘 됬는지 확인용 print를 콘솔에 출력
+
+if __name__ == '__main__':      # 우리가 아는 메인함수
+    setup()
+    send_data('CONN', None, None, None)   # 접속 시작 이후에 MQTT에 접속 성공 메세지 전달
+    # None은 NULL과 같음
+
+    try:
+        loop()
+    except KeyboardInterrupt:   # 오류발생하면 잡히는 catch문과 같음
+        GPIO.cleanup()
+```
+
+<br>
+
+- 위의 이미지처럼 회로를 구성하고, 라즈베리파이에 위의 코드를 실행해줍니다. <br>
+- 이때 스위치를 누르면 칼라센서에있는 LED가 켜지면서 센서가 작동되는데, 이때 빨간색이나 초록색 물체를 갖다댄 상태로 켜주면 센서가 감지됩니다.
+
+<p align = "center">
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/%EC%84%BC%EC%84%9C%EC%9E%91%EB%8F%99.gif">
+</p>
+
+<p align = "center">
+  (스위치를 눌렀을때 센서 작동)
+</p>
+
+<p align = "center">
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/machine01%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.png">
+</p>
+
+<br>
+
+<p align = "center">
+machine01.py 실행화면 <br>
+(물체의 색깔에따라 red, green, blue의 값이 확 뛰는 것을 확인할 수 있다)
+</p>
+<br>
+
+### DB 물리 설계
 <p align = "center" >
-  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/MRP%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%AA%A9%ED%91%9C01.png"  >
+ <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Query/DB_Diagram.PNG">
 </p>
 
