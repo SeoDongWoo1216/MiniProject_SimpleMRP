@@ -1,4 +1,5 @@
 # MiniProject_SimpleMRP
+![MRP실행화면](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/ProcessView_%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.gif)
 - MES는 'Manufacturing Execution System'으로 오더 착수부터 제품 출하까지 전 생산활동을 관리하는 시스템으로 생산 현장에서 발생하는 데이터를 실시간으로 집계/분석/모니터링하는 시스템입니다.
 - 이 프로그램에서는 공정의 품질검사 부분을 집계/모니터링합니다.(칼라센서를 통하여 구현)
 - 품질검사는 칼라센서를통해 빨간색이면 불량(Fail), 초록색이면 정상으로 구분하여 구현하였습니다.
