@@ -92,6 +92,7 @@ dev_id = 'MACHINE01'
 broker_address = '210.119.12.87'       # 브로커 주소 : 본인 컴퓨터의 IP
 pub_topic = 'factory1/machine1/data/'  # 토픽
 
+# Mosquito를 활용하여 MQTT방식으로 json 형태의 데이터를 전달
 def send_data(param, red, green, blue):  # 누를때마다 데이터를 넘겨줌
     message = ''
     if param == 'GREEN':  # 녹색이면 OK
@@ -220,3 +221,30 @@ machine01.py 실행화면 <br>
  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Query/DB_Diagram.PNG">
 </p>
 
+
+## UI 구성(WPF, Winforms)
+
+### [Winforms(connect UI)]()
+
+
+### [WPF(Main UI)](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/MRPApp)
+[UI 소스코드 분석](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/MRPApp)
+
+<p align = "center" >
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/MRP_UI_%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.gif"
+</p>
+
+<p align = "center" >
+UI 실행화면
+</p>
+
+<br>
+
+### 다음은
+
+
+<br>
+
+## 뭐 추가할까
+
+<br>
