@@ -217,11 +217,42 @@ machine01.py 실행화면 <br>
 </p>
 <br>
 
+### Data Transfer 구성
+- 데이터를 터미널(IoT, 임베디드)인 클라이언트에서 데이터를 수집할 서버로 전달하기위해 MQTT를 사용
+- MQTT 특징
+  - 클라이언트 : MQTT Broker에 연결되는 모든 것
+  - Broker : 모든 메시지를 수신, 필터링, 메시지 구독하는 클라이언트 결정, 메시지 보내는 역할을 하는 중간 매개체
+  - Publish : Topic을 지정, Topic을 Subscribe하고 있는 클라이언트에게 메시지를 전달
+  - Subscribe : Topic을 구독, Topic으로 Publish된 메시지를 수신
+
+#### MQTT 라이브러리 paho-mqtt 설치
+```Python
+pip install paho-mqtt
+```
+
+<br>
+
+<p align = "center">
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/MQTT_%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.png">
+</p>
+
+<p align = "center">
+ 라즈베리파이의 machine01.py를 실행한 후에 센서값을 감지하면 MQTT Explorer에 센서값이 전달된다
+</p>
+
+
+<br><br>
+
 ### DB 물리 설계
 <p align = "center" >
  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Query/DB_Diagram.PNG">
 </p>
 
+- Process는 ProcessView에서 처리할 실시간 공정과정을 저장하는 테이블 
+- Settings는 공통 코드 관리 테이블
+- Schedules는 공정 계획 테이블
+
+<br><br>
 
 ## UI 구성(WPF, Winforms)
 
@@ -250,11 +281,61 @@ MRPApp 실행화면
 <br>
 
 
-### 다음은
+## 실행화면
 
+### - 공정계획
+
+<p align = "center" >
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/Schedules%EC%9B%80%EC%A7%A4.gif">
+</p>
 
 <br>
 
-## 뭐 추가할까
+<p align = "center" >
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/Schedules_%EA%B2%BD%EA%B3%A0%EC%9B%80%EC%A7%A4.gif">
+</p>
+  
+<p align = "center" >
+각 컴포넌트가 빈값이면 입력이나 수정이 되지않도록 유효성 검사를 통해 입력할 수 있도록 오류 제어
+</p>
 
 <br>
+
+### - 실시간 공정관리
+
+<p align = "center" >
+  <img src ="https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/ProcessView_%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.gif">
+</p>
+
+- 라즈베리파이, 윈폼에서 실행하여 통신망을 구축하고, ProcessView에서 모니터링을 진행합니다. <br>
+- 이때 칼라센서에 물체를 놔두고 작동시키면 빨간색, 초록색에따라 애니메이션 정사각형 그림이 색깔이 변하게되고, 성공/실패 수량이 count됩니다.
+
+<br>
+
+### - 레포트(Visualization)
+
+<p align = "center" >
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/ReportView%EC%9B%80%EC%A7%A4.gif">
+</p>
+
+<p align = "center" >
+Live Chart 라이브러리를 활용하여 Visualization
+</p>
+
+<br>
+
+### - 공통코드관리
+
+<p align = "center">
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/Setting%EC%9B%80%EC%A7%A4.gif">
+</p>
+
+<p align = "center">
+  그리드의 값을 CRUD를 통해 데이터를 관리할 수 있도록 구현
+</p>
+
+<br>
+
+
+---------------------
+
