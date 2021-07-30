@@ -225,21 +225,30 @@ machine01.py 실행화면 <br>
 
 ## UI 구성(WPF, Winforms)
 
-### [Winforms(connect UI)]()
-
-
-### [WPF(Main UI)](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/MRPApp)
-[UI 소스코드 분석](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/MRPApp)
+[Winforms 소스코드 분석](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/DeviceSubApp)
 
 <p align = "center" >
-  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/MRP_UI_%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.gif"
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/DeviceSub%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.gif" width="80%" height="80%" >
 </p>
 
 <p align = "center" >
-UI 실행화면
+DeviceSubApp 실행화면
 </p>
 
 <br>
+
+[WPF 소스코드 분석](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/MRPApp)
+
+<p align = "center" >
+  <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/MRP_UI_%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.gif" >
+</p>
+
+<p align = "center" >
+MRPApp 실행화면
+</p>
+
+<br>
+
 
 ### 다음은
 
