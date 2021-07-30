@@ -256,7 +256,7 @@ pip install paho-mqtt
 
 ## UI 구성(WPF, Winforms)
 
-[Winforms 소스코드 분석](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/DeviceSubApp)
+[★Winforms 소스코드 분석★](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/DeviceSubApp)
 
 <p align = "center" >
   <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/DeviceSub%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.gif" width="80%" height="80%" >
@@ -268,7 +268,7 @@ DeviceSubApp 실행화면
 
 <br>
 
-[WPF 소스코드 분석](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/MRPApp)
+[☆WPF 소스코드 분석☆](https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/tree/main/MRPApp)
 
 <p align = "center" >
   <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/MRP_UI_%EC%8B%A4%ED%96%89%ED%99%94%EB%A9%B4.gif" >
