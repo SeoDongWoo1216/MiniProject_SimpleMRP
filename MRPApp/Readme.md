@@ -1,4 +1,9 @@
-# MRP UI 구성
+# WPF UI 구성
+- 솔루션 파일 구성
+  - DB 쿼리를 처리하는 Logic 디렉터리에 DataAccess.cs
+  - Entity Framework의 속성을 처리하는 Logic 디렉터리 
+  - 필요한 이미지를 담아놓은 Resource 디렉터리 
+  - 각 화면의 View를 처리하는 View 디렉터리
 - DB와의 연동은 Entity Framework를 사용했습니다.
 - 각 View 디자인은 .xaml 을 참고해주세요
 
@@ -13,6 +18,8 @@
 - [ReportForm](#reportform) : 공정 리포트화면이며, 모니터링의 누적 데이터가 그래프를 통해 출력됩니다.(Chart는 라이브 차트를 사용했습니다)
 - [SettingForm](#settingform) : 공통 코드 관리화면이며, 공장코드와 공장이름 데이터를 CRUD를 통해 관리할 수 있습니다.
 
+------------
+
 ## 소스분석
 
 ### MainForm
@@ -25,7 +32,6 @@
 using MRPApp.View.뷰이름;
  private void Btn뷰이름_Click(object sender, RoutedEventArgs e)
 {
-    // 버튼 클릭했을때 화면 띄우는 이벤트
     try
     {
         ActiveControl.Content = new 뷰이름();
@@ -37,7 +43,24 @@ using MRPApp.View.뷰이름;
     }
 }
 ```
+
 <br>
+
+```C#
+// 종료버튼 이벤트
+private async void BtnExit_Click(object sender, RoutedEventArgs e)
+     {
+         var result = await this.ShowMessageAsync("종료", "프로그램을 종료하시겠습니까?",
+                MessageDialogStyle.AffirmativeAndNegative, null);
+
+         if (result == MessageDialogResult.Affirmative)  // 프로그램 종료창에서 OK를 누르면 프로그램이 종료됨
+             Application.Current.Shutdown();
+     }
+```
+
+<br>
+
+------------
 
 ### ScheduleForm
 
@@ -75,6 +98,8 @@ private void GrdData_SelectedCellsChanged(object sender, SelectedCellsChangedEve
 ```
 
 <br>
+
+------------
 
 ### ProcessForm
 <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/ProcessForm.png" width = "80%" Height = "80%">
@@ -239,10 +264,10 @@ private void Client_MqttMsgPublishReceived(object sender, uPLibrary.Networking.M
 }
 ```
 
-####  
-
 
 <br>
+
+------------
 
 ### ReportForm
 <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/ReportForm.png" width = "80%" Height = "80%"> 
@@ -293,21 +318,22 @@ private void DisplayChart(List<Model.Report> list)
 
 <br>
 
+------------
+
 ### SettingForm
 <img src = "https://github.com/SeoDongWoo1216/MiniProject_SimpleMRP/blob/main/Image/SettingForm.png" width = "80%" Height = "80%">
+- 공정계획과 CRUD 원리와 동일
 
 <br>
-
-
-
-
 
 <p align = "center">
 </p>
 
 <br>
 
-#### DataAccess.cs
+------------
+
+### DataAccess.cs
 - 모든 View에 DB Query가 들어가는데, 따로 클래스로 묶어주어서 호출만 할 수 있도록 구현했습니다. 
 - Entity Framework를 사용하여 쿼리를 조금 더 편리하게 다룰 수 있도록 하였습니다.
   - 기존의 C#과 SQL Server연동은 SqlConnection을 사용하여 직접 쿼리문을 작성하고, 각 Column에 해당되는 데이터를 따로 변수에 저장하여 컴포넌트에 옮기는 작업을 해주어야합니다.
